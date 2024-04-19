@@ -90,10 +90,8 @@ const LoginScreen = ({navigation}:any) => {
       <SectionComponent >
         <ButtonComponent onPress={handleLogin} text='SIGN IN' type='primary'/>
       </SectionComponent>
-      
-      
+           
         <SocialLogin/>
-      
 
       <SectionComponent>
         <RowComponent justify='center'>
@@ -101,9 +99,6 @@ const LoginScreen = ({navigation}:any) => {
           <ButtonComponent type='link' text=' Sign Up' onPress={()=>navigation.navigate('SignUpScreen')}/>
         </RowComponent>
       </SectionComponent>
-      
-
-       
     </ContainerComponent> 
   )
 }
