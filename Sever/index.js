@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const authRouter = require('./src/routers/authRouter');
 const connectDB = require('./src/configs/connectDB');
+const errorMiddleware = require('./src/middlewares/errorMiddleware');
 const app = express()
 
 app.use(cors());
@@ -12,6 +13,8 @@ const PORT = 3001
 app.use('/auth', authRouter);
 
 connectDB();
+
+app.use(errorMiddleware)
 
 app.listen(PORT,(err)=>{
     if (err) {
