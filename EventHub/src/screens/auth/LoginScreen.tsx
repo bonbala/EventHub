@@ -12,7 +12,7 @@ import authenticationAPI from '../../apis/authApi'
 
 
 
-const SignUpScreen = ({navigation}:any) => {
+const LoginScreen = ({navigation}:any) => {
 
   const[email,setEmail]=useState('')
   const[password,setPassword]=useState('')
@@ -108,6 +108,6 @@ const SignUpScreen = ({navigation}:any) => {
   )
 }
 
-export default SignUpScreen
+export default LoginScreen
 
 const styles = StyleSheet.create({})
