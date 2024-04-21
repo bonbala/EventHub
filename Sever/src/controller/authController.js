@@ -14,6 +14,16 @@ const getJsonWebToken = async (email,id) =>{
     return token;
 }
 
+const handleSendMail = async (val)=>{
+    //send mail
+}
+
+const verification = asyncHandle (async(req,res)=>{
+    const {email}=req.body;
+    console.log(email);
+    res.send('Nguhoc')
+})
+
 const register =  asyncHandle(async (req,res) => {
     const{email,username,password}=req.body;
 
@@ -83,5 +93,5 @@ function comparePasswords(password1, password2) {
 
 
 module.exports = {
-    register,login
+    register,login,handleSendMail,verification
 }

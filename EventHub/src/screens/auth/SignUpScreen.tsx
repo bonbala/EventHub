@@ -12,6 +12,13 @@ import authenticationAPI from '../../apis/authApi'
 import { Validate } from '../../utils/validate'
 import { useDispatch } from 'react-redux'
 import { addAuth } from '../../redux/reducers/authReducer'
+import { err } from 'react-native-svg'
+
+interface ErrorMessages  {
+  email: string,
+  password: string,
+  confirmPassword: string,
+} 
 
 const initValue = {
   username: '',
@@ -23,21 +30,26 @@ const initValue = {
 
 const SignUpScreen = ({navigation}:any) => {
   const [values, setValues] = useState(initValue);
-  const [isLoading,setIsLoading] = useState(false);
-  const [errorMessage,setErrorMessage] = useState('')
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<any>();
+  const [isDisable, setIsDisable]= useState(true);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  useEffect(()=> {
+    if (!errorMessage || errorMessage && (errorMessage.email ||errorMessage.password  || errorMessage.confirmPassword)) {
+      setIsDisable(true)   
+    }else{
+      setIsDisable(false)
+    }
+  },[errorMessage]);
 
   // const[email,setEmail]=useState('');
   // const[username,setUsername]=useState('');
   // const[password,setPassword]=useState('');
   // const[confirmPass,setConfirmPass]=useState('');
 
-  useEffect(()=>{
-    if (values.email || values.password) {
-      setErrorMessage('');
-    }
-  },[values.email, values.password])
+
 
   const handleChangeValue = (key: string, value: string) => {
     const data: any = {...values};
@@ -46,43 +58,53 @@ const SignUpScreen = ({navigation}:any) => {
 
     setValues(data);
   };
+  
+  const formValidator =(key: string)=>{
+    const data ={...errorMessage}
+    let message= ``
+    switch (key) {
+      case 'email':
+        if (!values.email) {
+          message=`Email is required!!!`
+        }else if(!Validate.email(values.email)){
+          message=`Email is not invalid`  
+        }else{
+          message='';
+        }
+        break;
+      
+      case 'password':
+          message= !values.password ? `Password is required!!!` : '';
+        break;
+
+      case 'confirmPassword':
+          if (!values.confirmPassword) {
+            message=`Please type confirm password!!`
+          }else if(values.confirmPassword !== values.password){
+            message=`Password is not matchh`
+          }else{
+            message=''
+          }
+        break;
+    }
+    data[`${key}`]=message;
+    setErrorMessage(data);
+  };
 
   const handleRegister = async ()=>{
+    const api = `/verification`;
 
-    const{email,password,confirmPassword}=values
-    
-    const emailValidation = Validate.email(email)
-    const passValidation = Validate.password(password)
-
-    if(email&&password&&confirmPassword) {
-      if (emailValidation && passValidation) {  
-        setErrorMessage('')
-        setIsLoading(true)
-        try {
-         const res = await authenticationAPI.HandleAuthentiaction(
-          '/register',
-          {
-            username: values.username,
-            email: values.email,
-            password: values.password,
-          },
-          'post'
-         );
-         dispatch(addAuth(res.data));
-         await AsyncStorage.setItem('auth',JSON.stringify(res.data))
-         setIsLoading(false);
-        } catch (error) {
-          console.log(error);
-          setIsLoading(false);
-        }   
-      }else{
-        setErrorMessage('Email not correct')
-      }
-      
-      }else{
-      setErrorMessage('Vui lòng nhập đầy đủ thông tin')
-      }   
-    };
+    try {
+      const res = await authenticationAPI.HandleAuthentiaction(
+        api,
+        {email: values.email},
+        'post'
+      );
+      console.log(res)
+    } catch (error) {
+      console.log(error);     
+    }
+  };
 
   return ( 
     <>
@@ -104,11 +126,12 @@ const SignUpScreen = ({navigation}:any) => {
 
           <InputComponent 
             value={values.email} 
-            placeholder='Email' 
+            placeholder='abc@email.com' 
             onChange={val => handleChangeValue('email',val)} 
             allowClear
             type='email-address'
             affix={<Sms size={22} color={appColors.gray}/>}
+            onEnd={()=>formValidator('email')}
           />
 
           <InputComponent 
@@ -118,6 +141,7 @@ const SignUpScreen = ({navigation}:any) => {
           onChange={val => handleChangeValue('password',val)} 
           allowClear
           affix={<Lock size={22} color={appColors.gray}/>}
+          onEnd={()=>formValidator('password')}
           />
 
           <InputComponent 
@@ -127,15 +151,24 @@ const SignUpScreen = ({navigation}:any) => {
           onChange={val=> handleChangeValue('confirmPassword',val)} 
           allowClear
           affix={<Lock size={22} color={appColors.gray}/>}
+          onEnd={()=>formValidator('confirmPassword')}
           />
 
         </SectionComponent>
 
         
         { 
-          errorMessage && (
+          errorMessage &&(errorMessage.email || errorMessage.password || errorMessage.confirmPassword ) && (
             <SectionComponent>
-              <TextComponent text={errorMessage} color='red'/>
+              {
+                Object.keys(errorMessage).map((error, index)=> errorMessage[`${error}`]&&(
+                <TextComponent 
+                text={errorMessage[`${error}`]} 
+                key={`error${index}`} 
+                color='red'
+              />
+              ))}
+              
             </SectionComponent>)
         }
         
@@ -143,7 +176,7 @@ const SignUpScreen = ({navigation}:any) => {
         <SpaceComponent height={20}/>
 
         <SectionComponent >
-          <ButtonComponent onPress={handleRegister} text='SIGN UP' type='primary'/>
+          <ButtonComponent disable={isDisable} onPress={handleRegister} text='SIGN UP' type='primary'/>
         </SectionComponent>
 
 
