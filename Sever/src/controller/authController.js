@@ -32,17 +32,56 @@ const register =  asyncHandle(async (req,res) => {
 
     await newUser.save()
 
-
-
     res.status(200).json({
         message:"Register new user successfully",
         data: {
-            ...newUser,
+            email: newUser.email,
+            id: newUser.id,
             accesstoken: await getJsonWebToken(email, newUser.id),
         },
     });
 });
 
+const login = asyncHandle(async (req,res) => {
+    const{email,password}= req.body;
+    
+    const existingUser = await UserModel.findOne({email});
+
+    if (!existingUser) {
+        res.status(403);
+        throw new Error('User not found')
+    }
+
+    const isMatchPassword = await comparePasswords(password, existingUser.password)
+    if (!isMatchPassword) {
+      res.status(401);
+      throw new Error('Email or Password is not correct !!!');
+    }
+
+    res.status(200).json({
+        message:'Login is successfully',
+        data:{
+          id: existingUser.id,
+          emai: existingUser.email,
+          accesstoken: await getJsonWebToken(email, existingUser.id),
+        },
+    });
+});
+
+
+function comparePasswords(password1, password2) {
+    if (password1.length !== password2.length) {
+        return false;
+    }
+    for (let i = 0; i < password1.length; i++) {
+        if (password1[i] !== password2[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
 module.exports = {
-    register,
+    register,login
 }

@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, View,Image, Switch } from 'react-native'
+import { Button, StyleSheet, Text, View,Image, Switch, Alert } from 'react-native'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ButtonComponent, ContainerComponent, InputComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
@@ -8,6 +8,9 @@ import {Lock, Sms} from 'iconsax-react-native'
 import { fontFamiles } from '../../constants/fontFamiles'
 import SocialLogin from './SocialLogin'
 import authenticationAPI from '../../apis/authApi'
+import { Validate } from '../../utils/validate'
+import { useDispatch } from 'react-redux'
+import { addAuth } from '../../redux/reducers/authReducer'
 
 
 
@@ -17,15 +20,29 @@ const LoginScreen = ({navigation}:any) => {
   const[email,setEmail]=useState('')
   const[password,setPassword]=useState('')
   const[isRemenber,setIsRemenber]=useState(true)
+  const dispatch = useDispatch()
 
   const handleLogin = async () => {
-   try {
-    const res = await authenticationAPI.HandleAuthentiaction('/hello')
-    console.log(res)
-   } catch (error) {
-    console.log(error);
-   }
-  };
+   
+   const emailValidation = Validate.email(email);
+   
+   if(emailValidation){
+      try {
+        const res = await authenticationAPI.HandleAuthentiaction(
+        '/login',
+        {email,password},
+        'post',
+        );
+        dispatch(addAuth(res.data));
+         await AsyncStorage.setItem('auth',isRemenber ? JSON.stringify(res.data): email,);
+
+      } catch (error) {
+        console.log(error);
+      }
+    }else{
+      Alert.alert("Email not correct")
+    }
+};
 
   return ( 
     <ContainerComponent isImageBackgroud >
