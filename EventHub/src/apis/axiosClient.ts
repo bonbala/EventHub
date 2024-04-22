@@ -2,8 +2,10 @@ import axios from "axios";
 import queryString from "query-string";
 import Authnavigator from "../navigators/AuthNavigator";
 import { err } from "react-native-svg";
+import { appInfo } from "../constants/appInfos";
 
 const axiosClient = axios.create({
+    baseURL: appInfo.BASE_URL,
     paramsSerializer: params => queryString.stringify(params)
 });
 

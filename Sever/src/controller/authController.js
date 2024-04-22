@@ -1,6 +1,17 @@
 const UserModel = require("../models/ModelUser");
 const asyncHandle = require('express-async-handler')
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
+
+const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: "luutep2021@gmail.com",
+      pass: "lfmq cwks qkpm tflu",
+    },
+  });
 
 const getJsonWebToken = async (email,id) =>{
     const secretKey = 'DoAn';
@@ -14,13 +25,24 @@ const getJsonWebToken = async (email,id) =>{
     return token;
 }
 
-const handleSendMail = async (val)=>{
-    //send mail
-}
+const handleSendMail = async (val,email)=>{
+    try {   
+        await transporter.sendMail({
+            from: '"Maddison Foo Koch " <maddison53@ethereal.email>', // sender address
+            to: email, // list of receivers
+            subject: "Verification", // Subject line
+            text: "Your code to verification email", // plain text body
+            html: "<h1>1234</h1>", // html body
+          });
+        
+    } catch (error) {
+        console.log(`Can not send email ${error}`);
+    }
+};
 
 const verification = asyncHandle (async(req,res)=>{
     const {email}=req.body;
-    console.log(email);
+    await handleSendMail('',email);
     res.send('Nguhoc')
 })
 
