@@ -4,13 +4,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ButtonComponent, ContainerComponent, InputComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
 import { globalStyles } from '../../styles/globalStyles'
 import { appColors } from '../../constants/appColors'
-import {Lock, Sms} from 'iconsax-react-native'
+import {EyeSlash, Lock, Sms} from 'iconsax-react-native'
 import { fontFamiles } from '../../constants/fontFamiles'
 import SocialLogin from './SocialLogin'
 import authenticationAPI from '../../apis/authApi'
 import { Validate } from '../../utils/validate'
 import { useDispatch } from 'react-redux'
 import { addAuth } from '../../redux/reducers/authReducer'
+import Icon from 'react-native-vector-icons/AntDesign'
 
 
 
@@ -47,21 +48,10 @@ const LoginScreen = ({navigation}:any) => {
   return ( 
     <ContainerComponent isImageBackgroud >
       
-      <SectionComponent styles={{
-        justifyContent:'center',
-        alignItems:'center',
-        marginTop:75,
-      }}>
-        <Image 
-          source={require('../../assets/images/logo_login.png')} 
-          style={{
-           width:162,
-           height:114, 
-          }}/>
-      </SectionComponent>
+      <SpaceComponent height={250}/>
 
       <SectionComponent>
-        <TextComponent size={24} font='' text='Sign In'/>
+        <TextComponent size={24} text='Welcome' styles={[globalStyles.title]}/>
 
         <SpaceComponent height={20}/>
         
@@ -83,37 +73,28 @@ const LoginScreen = ({navigation}:any) => {
          affix={<Lock size={22} color={appColors.gray}/>}
         />
 
-        <RowComponent justify="space-between">
-          <RowComponent onPress={()=>setIsRemenber(!isRemenber)}>
-            <Switch 
-            trackColor={{true:appColors.primary}}
-            thumbColor={appColors.white}
-            value={isRemenber} 
-            onChange={()=> setIsRemenber(!isRemenber)} />
-            <TextComponent text='Remenber Me'/>
-            </RowComponent>
-            
-
+        <RowComponent justify="flex-end">
             <ButtonComponent
-              text='Forgot Password'
+              text='Forgot Password ?'
               onPress={()=>navigation.navigate('ForgotPassword')}
               type='text'
+              textStyles={[globalStyles.shadowtext]}
             />
         </RowComponent>
       </SectionComponent>
 
       <SpaceComponent height={20}/>
       
-      <SectionComponent >
-        <ButtonComponent onPress={handleLogin} text='SIGN IN' type='primary'/>
+      <SectionComponent>
+        <ButtonComponent onPress={handleLogin} text='Choose-Me!' size={32} type='primary' textStyles={[globalStyles.title,{color:'#3C2716'}]} />
       </SectionComponent>
-           
+            
         <SocialLogin/>
 
-      <SectionComponent>
+      <SectionComponent >
         <RowComponent justify='center'>
-          <TextComponent text="Don't have an account? "/>
-          <ButtonComponent type='link' text=' Sign Up' onPress={()=>navigation.navigate('SignUpScreen')}/>
+          <TextComponent size={22} text="New to Choose-Me? " color={appColors.title}/>
+          <ButtonComponent type='link' text=' Sign Up' onPress={()=>navigation.navigate('SignUpScreen')} textStyles={[globalStyles.shadowtext]}/>
         </RowComponent>
       </SectionComponent>
     </ContainerComponent> 

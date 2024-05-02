@@ -18,14 +18,15 @@ interface Props {
     iconFlex?: 'left'|'right';
     textFont?: string,
     disable?: boolean,
+    size?: number;
  }
 
 const ButtonComponent = (props:Props) => {
     
-    const {icon,text,color,type,styles,textcolor,textStyles,onPress,iconFlex,textFont,disable}=props
+    const {icon,text,color,type,styles,textcolor,textStyles,onPress,iconFlex,textFont,disable,size}=props
 
   return type ==='primary' ? (
-    <View style={{alignItems:'center'}}>
+    <View style={[{alignItems:'center'}]}>
       <TouchableOpacity 
         disabled={disable}  
         activeOpacity={0.5} 
@@ -33,10 +34,11 @@ const ButtonComponent = (props:Props) => {
         style={[
         globalStyles.button,
         globalStyles.shadow,
+        globalStyles.border,
         {
           backgroundColor:  color ? color : disable ? appColors.gray4 : appColors.primary,
           marginBottom:17,
-          width:'85%',
+          width:'60%',
         },
         styles]}
       >
@@ -49,9 +51,10 @@ const ButtonComponent = (props:Props) => {
         textStyles, 
         {
           marginLeft: icon ? 12:0,
-          fontSize:16,
-          textAlign:'center'
-        }
+          fontSize: size !== undefined ? size : 16,
+          textAlign:'center',
+        },
+        styles,
       ]}
       flex={icon && iconFlex==='right' ? 1 : 0}
       font={textFont ?? fontFamiles.medium}
@@ -65,9 +68,16 @@ const ButtonComponent = (props:Props) => {
 
     <TouchableOpacity onPress={onPress}>
       <TextComponent 
+      flex={0}
       text={text}
-      color={type==='link' ? appColors.primary : appColors.link}
-      
+      color={appColors.title}
+      styles={[textStyles,
+        {
+          fontFamily:fontFamiles.spartan,
+          fontSize:20,
+          fontWeight:'800',
+          
+        }]}
       />
     </TouchableOpacity>
 

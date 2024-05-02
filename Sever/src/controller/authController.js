@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
     secure: true,
     auth: {
       user: "luutep2021@gmail.com",
-      pass: "lfmq cwks qkpm tflu",
+      pass: "apkf oqno nqmd ujgc",
     },
   });
 
@@ -26,24 +26,37 @@ const getJsonWebToken = async (email,id) =>{
 }
 
 const handleSendMail = async (val,email)=>{
-    try {   
+    try {  
         await transporter.sendMail({
-            from: '"Maddison Foo Koch " <maddison53@ethereal.email>', // sender address
-            to: email, // list of receivers
-            subject: "Verification", // Subject line
-            text: "Your code to verification email", // plain text body
-            html: "<h1>1234</h1>", // html body
-          });
+         from: '"Maddison Foo Koch " ', // sender address
+         to: email, // list of receivers
+         subject: "Verification", // Subject line
+         text: "Your code to verification email", // plain text body
+         html: `<h1>${val}</h1>`, // html body
+        });
         
+        return 'OK';
+
     } catch (error) {
-        console.log(`Can not send email ${error}`);
+        return error
     }
 };
 
 const verification = asyncHandle (async(req,res)=>{
     const {email}=req.body;
-    await handleSendMail('',email);
-    res.send('Nguhoc')
+    const verificationCode = Math.round(1000 +Math.random()*9000);
+    try {
+      await handleSendMail(verificationCode,email);
+      res.status(200).json({
+        message:'Send verification code successfully!!!',
+        data: {code:verificationCode}
+    });  
+    } catch (error) {
+      res.status(401)
+      throw new Error('Can not send email')   
+    }
+    
+    
 })
 
 const register =  asyncHandle(async (req,res) => {

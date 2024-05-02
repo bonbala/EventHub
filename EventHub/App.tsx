@@ -1,6 +1,5 @@
 import { StatusBar, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { SplashScreen } from './src/screens';
 import Authnavigator from './src/navigators/AuthNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';

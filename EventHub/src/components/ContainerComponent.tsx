@@ -32,7 +32,8 @@ const ContainerComponent = (props:Props) => {
            styles={{paddingHorizontal:16, 
            paddingVertical: 10,
            minWidth:48,
-           minHeight:48
+           minHeight:48,
+          justifyContent:'flex-start'
            }}>
             {back && (
               <TouchableOpacity 

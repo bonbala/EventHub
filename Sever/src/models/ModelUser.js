@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
     password: {type: String},
     createdAt:{type: Date, default: Date.now()},
     updatedAt:{type: Date, default: Date.now()}
-},{collection:'User'});
+},{collection:'user'});
 
 const UserModel = mongoose.model('user', UserSchema);
 module.exports = UserModel;
