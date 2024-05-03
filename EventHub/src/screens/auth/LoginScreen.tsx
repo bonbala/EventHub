@@ -1,5 +1,5 @@
 import { Button, StyleSheet, Text, View,Image, Switch, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ButtonComponent, ContainerComponent, InputComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
 import { globalStyles } from '../../styles/globalStyles'
@@ -18,10 +18,21 @@ import Icon from 'react-native-vector-icons/AntDesign'
 
 const LoginScreen = ({navigation}:any) => {
 
-  const[email,setEmail]=useState('')
-  const[password,setPassword]=useState('')
-  const[isRemenber,setIsRemenber]=useState(true)
-  const dispatch = useDispatch()
+  const[email,setEmail]=useState('');
+  const[password,setPassword]=useState('');
+  const[isRemember,setIsRemember]=useState(true)
+  const [isDisable, setIsDisable]= useState(true);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const emailValidation = Validate.email(email);
+
+    if (!email || !password || !emailValidation) {
+      setIsDisable(true);
+    } else {
+      setIsDisable(false);
+    }
+  }, [email, password]);
 
   const handleLogin = async () => {
    
@@ -35,7 +46,7 @@ const LoginScreen = ({navigation}:any) => {
         'post',
         );
         dispatch(addAuth(res.data));
-         await AsyncStorage.setItem('auth',isRemenber ? JSON.stringify(res.data): email,);
+         await AsyncStorage.setItem('auth',isRemember ? JSON.stringify(res.data): email,);
 
       } catch (error) {
         console.log(error);
@@ -73,7 +84,13 @@ const LoginScreen = ({navigation}:any) => {
          affix={<Lock size={22} color={appColors.gray}/>}
         />
 
-        <RowComponent justify="flex-end">
+        <RowComponent justify="space-between">
+        <Switch
+              trackColor={{true: appColors.primary}}
+              thumbColor={appColors.white}
+              value={isRemember}
+              onChange={() => setIsRemember(!isRemember)}
+            />
             <ButtonComponent
               text='Forgot Password ?'
               onPress={()=>navigation.navigate('ForgotPassword')}
@@ -86,7 +103,13 @@ const LoginScreen = ({navigation}:any) => {
       <SpaceComponent height={20}/>
       
       <SectionComponent>
-        <ButtonComponent onPress={handleLogin} text='Choose-Me!' size={32} type='primary' textStyles={[globalStyles.title,{color:'#3C2716'}]} />
+        <ButtonComponent 
+         disable={isDisable} 
+         onPress={handleLogin} 
+         text='Choose-Me!' 
+         size={32} type='primary' 
+         textStyles={[globalStyles.title,{color:'#3C2716'}]} 
+        />
       </SectionComponent>
             
         <SocialLogin/>
