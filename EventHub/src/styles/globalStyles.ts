@@ -8,9 +8,17 @@ export const globalStyles = StyleSheet.create({
         backgroundColor: appColors.white,   
     },
     text:{
-        fontFamily: fontFamiles.regular,
+        fontFamily: fontFamiles.spartan,
         fontSize:14,
         color: appColors.text,
+    },
+    title:{
+        fontFamily: fontFamiles.lecker, 
+        fontSize:40,
+        color: appColors.title,
+        textShadowColor: 'rgba(0, 0, 0, 0.25)',
+        textShadowOffset: { width: 0, height: 4 },
+        textShadowRadius: 5,
     },
     button:{
         borderRadius: 12,
@@ -24,13 +32,20 @@ export const globalStyles = StyleSheet.create({
     },
     shadow:{
         shadowColor: 'rbga(0,0,0,0,5)',
-        shadowOffset: {
-            width:0,
-            height:4
-        },
+        
         shadowOpacity: 0.25,
         shadowRadius:8,
         elevation:6,
+    },
+    shadowtext:{
+        textShadowColor: 'rgba(0, 0, 0, 0.25)',
+        textShadowOffset: { width: 0, height: 4 },
+        textShadowRadius: 5,
+    },
+    border:{
+        borderRadius: 12,
+        borderWidth:1,
+        borderColor: '#FFFDDB',
     },
     section:{
         paddingHorizontal:16,

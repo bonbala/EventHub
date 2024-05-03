@@ -1,7 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View, TextInput, KeyboardType } from 'react-native'
 import React, { ReactNode, useState } from 'react'
 import { globalStyles } from '../styles/globalStyles';
-import { EyeSlash } from 'iconsax-react-native';
 import { appColors } from '../constants/appColors';
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAweSome from 'react-native-vector-icons/FontAwesome'
@@ -66,15 +65,23 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         borderRadius: 12,
         borderWidth:1,
-        borderColor: appColors.gray,
+        borderColor: '#FFFDDB',
         width:'100%',
         minHeight:56,
-        justifyContent:'center',
         alignItems:'center',
+        justifyContent:'center',
         paddingHorizontal:15,
-        backgroundColor:appColors.white,
-        marginBottom:19,
-        
+        backgroundColor:'rgba(233, 202, 183, 1)',
+        marginBottom:19, 
+        shadowColor: 'rbga(0,0,0,0,5)',
+        shadowOffset: {
+            width:0,
+            height:4
+        },
+        shadowOpacity:0.25,
+        shadowRadius:8,
+        elevation:6, 
+          
     },
 
     input:{

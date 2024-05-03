@@ -3,5 +3,7 @@ export const fontFamiles = {
     medium:'AirbnbCereal_W_Md',
     semiBold:'AirbnbCereal_W_Bd',
     bold:'AirbnbCereal_W_XBd',
+    lecker: 'LeckerliOne-Regular',
+    spartan:'LeagueSpartan-VariableFont_wght'
 
 }

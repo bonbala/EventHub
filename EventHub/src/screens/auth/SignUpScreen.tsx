@@ -37,19 +37,19 @@ const SignUpScreen = ({navigation}:any) => {
   const dispatch = useDispatch();
 
   useEffect(()=> {
-    if (!errorMessage || errorMessage && (errorMessage.email ||errorMessage.password  || errorMessage.confirmPassword)) {
+    if (
+      !errorMessage || 
+      (errorMessage && 
+        (errorMessage.email ||
+          errorMessage.password || 
+          errorMessage.confirmPassword)) || 
+    (!values.email || !values.password || !values.confirmPassword)
+    ) {
       setIsDisable(true)   
     }else{
       setIsDisable(false)
     }
   },[errorMessage]);
-
-  // const[email,setEmail]=useState('');
-  // const[username,setUsername]=useState('');
-  // const[password,setPassword]=useState('');
-  // const[confirmPass,setConfirmPass]=useState('');
-
-
 
   const handleChangeValue = (key: string, value: string) => {
     const data: any = {...values};
@@ -93,16 +93,26 @@ const SignUpScreen = ({navigation}:any) => {
 
   const handleRegister = async ()=>{
     const api = `/verification`;
-
+    setIsLoading(true)  
     try {
       const res = await authenticationAPI.HandleAuthentiaction(
         api,
         {email: values.email},
         'post'
       );
+
       console.log(res)
+      setIsLoading(false)  
+
+      navigation.navigate('Verification',{
+        code:res.data.code,
+        ...values,
+      })
+
+      
     } catch (error) {
-      console.log(error);     
+      console.log(error); 
+      setIsLoading(false)
     }
   };
 
@@ -110,12 +120,12 @@ const SignUpScreen = ({navigation}:any) => {
     <>
       <ContainerComponent isImageBackgroud back >
 
-        <SectionComponent>
-          <TextComponent size={24} font='' text='Sign In'/>
+        <SectionComponent >
+        <TextComponent size={24} text='Sign Up' styles={[globalStyles.title]}/>
 
           <SpaceComponent height={20}/>
   
-          <InputComponent 
+          <InputComponent
             value={values.username} 
             placeholder='Username' 
             onChange={val => handleChangeValue('username',val)} 
@@ -176,7 +186,7 @@ const SignUpScreen = ({navigation}:any) => {
         <SpaceComponent height={20}/>
 
         <SectionComponent >
-          <ButtonComponent disable={isDisable} onPress={handleRegister} text='SIGN UP' type='primary'/>
+          <ButtonComponent disable={isDisable} onPress={handleRegister}text='Register' size={32} type='primary' textStyles={[globalStyles.title,{color:'#3C2716'}]} />
         </SectionComponent>
 
 
@@ -185,8 +195,8 @@ const SignUpScreen = ({navigation}:any) => {
 
         <SectionComponent>
           <RowComponent justify='center'>
-          <TextComponent text="Have an account? "/>
-          <ButtonComponent type='link' text=' Sign In' onPress={()=>navigation.navigate('LoginScreen')}/>
+          <TextComponent size={22} text="Have an account? " color={appColors.title}/>
+          <ButtonComponent type='link' text=' Sign In' onPress={()=>navigation.navigate('LoginScreen')} textStyles={[globalStyles.shadowtext]} />
           </RowComponent>
         </SectionComponent>
         

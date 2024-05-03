@@ -20,8 +20,6 @@ const SplashScreen = () => {
         resizeMode:'contain',
       }}/>
     <SpaceComponent height={20}/>
-    <ActivityIndicator color={appColors.gray}/>
-    
     </ImageBackground>
   )
 }
