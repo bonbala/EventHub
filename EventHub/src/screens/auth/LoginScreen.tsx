@@ -87,7 +87,7 @@ const LoginScreen = ({navigation}:any) => {
           <RowComponent onPress={()=>setIsRemenber(!isRemenber)}>
             <Switch 
             trackColor={{true:appColors.primary}}
-            thumbColor={appColors.white}
+            thumbColor={appColors.gray}
             value={isRemenber} 
             onChange={()=> setIsRemenber(!isRemenber)} />
             <TextComponent text='Remenber Me'/>

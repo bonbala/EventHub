@@ -1,16 +1,18 @@
 const {mongoose}=require('mongoose');
 
-const dbURL= `mongodb+srv://nhathieu1805:54pussq7xG7QatQI@cluster0.dmrfi6s.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+const dbURL= `mongodb+srv://hohuyen712002:1234567890@huyn.x1hf2z0.mongodb.net/`
 
 const connectDB = async () => {
     try {
-     const connection = await mongoose.connect(dbURL,{dbName:'ChooseMe'});
+     const connection = await mongoose.connect(dbURL,{dbName:'data'});
      console.log('Connect MongoDb successfully');
     } catch (error) {
      console.log(error);
      process.exit(1);
     };
 };
+
+
 
 
 module.exports = connectDB
